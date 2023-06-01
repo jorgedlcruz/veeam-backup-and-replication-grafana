@@ -1066,7 +1066,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_managedservers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"veeamVBRMSInternalID\")\r\n  |> group(columns: [\"veeamVBRMSName\"])\r\n  |> last()",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_managedservers\")\r\n  |> filter(fn: (r) => r[\"veeamVBRMSName\"] =~ /${vbrmanaged:regex}/)\r\n  |> filter(fn: (r) => r[\"_field\"] == \"veeamVBRMSInternalID\")\r\n  |> group(columns: [\"veeamVBRMSName\"])\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -1234,7 +1234,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_proxies\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"veeamVBRProxyTask\")\r\n  |> group(columns: [\"veeamVBRProxyName\"])\r\n  |> last()",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_proxies\")\r\n  |> filter(fn: (r) => r[\"veeamVBRProxyName\"] =~ /${vbrproxies:regex}/)\r\n  |> filter(fn: (r) => r[\"_field\"] == \"veeamVBRProxyTask\")\r\n  |> group(columns: [\"veeamVBRProxyName\"])\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -1448,7 +1448,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "  from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_repositories\")\r\n  |> group(columns: [\"veeamVBRRepoName\"])\r\n  |> last()\r\n  |> yield(name: \"last\")\r\n",
+          "query": "  from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_repositories\")\r\n  |> filter(fn: (r) => r[\"veeamVBRRepoName\"] =~ /${vbrrepositories:regex}/)\r\n  |> group(columns: [\"veeamVBRRepoName\"])\r\n  |> last()\r\n  |> yield(name: \"last\")\r\n",
           "refId": "A"
         }
       ],
@@ -1840,6 +1840,6 @@
   "timezone": "",
   "title": "Grafana Dashboard for Veeam Backup & Replication",
   "uid": "8W6ydiwVk",
-  "version": 11,
+  "version": 12,
   "weekStart": ""
 }
