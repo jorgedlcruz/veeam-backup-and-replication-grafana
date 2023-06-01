@@ -1003,7 +1003,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1047,6 +1048,7 @@
       },
       "id": 46,
       "options": {
+        "cellHeight": "sm",
         "footer": {
           "countRows": false,
           "enablePagination": true,
@@ -1059,7 +1061,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -1146,7 +1148,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1214,6 +1217,7 @@
       },
       "id": 55,
       "options": {
+        "cellHeight": "sm",
         "footer": {
           "countRows": false,
           "enablePagination": true,
@@ -1226,7 +1230,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -1311,7 +1315,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1427,6 +1432,7 @@
       },
       "id": 64,
       "options": {
+        "cellHeight": "sm",
         "footer": {
           "countRows": false,
           "enablePagination": true,
@@ -1439,7 +1445,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -1548,7 +1554,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "semi-dark-green",
@@ -1593,7 +1600,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "repeat": "vbrprotected",
       "repeatDirection": "h",
       "targets": [
@@ -1693,14 +1700,14 @@
           "type": "influxdb",
           "uid": "${DS_INFLUXDB}"
         },
-        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBRName\"] != \"\")\r\n  |> keep(columns: [\"veeamVBRName\"])\r\n  |> distinct(column: \"veeamVBRName\")\r\n  |> group()",
+        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBR\"] != \"\")\r\n  |> keep(columns: [\"veeamVBR\"])\r\n  |> distinct(column: \"veeamVBR\")\r\n  |> group()",
         "hide": 0,
         "includeAll": true,
         "label": "Veeam Backup Server",
         "multi": true,
         "name": "vbrserver",
         "options": [],
-        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBRName\"] != \"\")\r\n  |> keep(columns: [\"veeamVBRName\"])\r\n  |> distinct(column: \"veeamVBRName\")\r\n  |> group()",
+        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBR\"] != \"\")\r\n  |> keep(columns: [\"veeamVBR\"])\r\n  |> distinct(column: \"veeamVBR\")\r\n  |> group()",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1837,6 +1844,6 @@
   "timezone": "",
   "title": "Grafana Dashboard for Veeam Backup & Replication",
   "uid": "8W6ydiwVk",
-  "version": 13,
+  "version": 15,
   "weekStart": ""
 }
