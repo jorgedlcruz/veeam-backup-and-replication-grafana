@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.4.3"
+      "version": "9.5.2"
     },
     {
       "type": "datasource",
@@ -449,6 +449,7 @@
       "links": [],
       "maxDataPoints": 50000,
       "options": {
+        "cellHeight": "sm",
         "footer": {
           "countRows": false,
           "enablePagination": true,
@@ -466,7 +467,7 @@
           }
         ]
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "alias": "$tag_veeamBackupSessionsName",
@@ -890,7 +891,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.5.2",
       "repeat": "vbrjobs",
       "repeatDirection": "h",
       "targets": [
@@ -1002,8 +1003,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1146,8 +1146,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1312,8 +1311,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1550,8 +1548,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "semi-dark-green",
@@ -1683,7 +1680,7 @@
       "type": "stat"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
@@ -1696,14 +1693,14 @@
           "type": "influxdb",
           "uid": "${DS_INFLUXDB}"
         },
-        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamBackupServer\"] != \"\")\r\n  |> keep(columns: [\"veeamBackupServer\"])\r\n  |> distinct(column: \"veeamBackupServer\")\r\n  |> group()",
+        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBRName\"] != \"\")\r\n  |> keep(columns: [\"veeamVBRName\"])\r\n  |> distinct(column: \"veeamVBRName\")\r\n  |> group()",
         "hide": 0,
         "includeAll": true,
         "label": "Veeam Backup Server",
         "multi": true,
         "name": "vbrserver",
         "options": [],
-        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamBackupServer\"] != \"\")\r\n  |> keep(columns: [\"veeamBackupServer\"])\r\n  |> distinct(column: \"veeamBackupServer\")\r\n  |> group()",
+        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"veeam_vbr_info\")\r\n  |> filter(fn: (r) => r[\"veeamVBRName\"] != \"\")\r\n  |> keep(columns: [\"veeamVBRName\"])\r\n  |> distinct(column: \"veeamVBRName\")\r\n  |> group()",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1840,6 +1837,6 @@
   "timezone": "",
   "title": "Grafana Dashboard for Veeam Backup & Replication",
   "uid": "8W6ydiwVk",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }
