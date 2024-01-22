@@ -972,7 +972,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 34
       },
       "id": 36,
       "panels": [],
@@ -1044,7 +1044,7 @@
         "h": 13,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 35
       },
       "id": 46,
       "options": {
@@ -1213,7 +1213,7 @@
         "h": 13,
         "w": 12,
         "x": 12,
-        "y": 30
+        "y": 35
       },
       "id": 55,
       "options": {
@@ -1428,7 +1428,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 48
       },
       "id": 64,
       "options": {
@@ -1528,7 +1528,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 59
       },
       "id": 91,
       "panels": [],
@@ -1582,7 +1582,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 55
+        "y": 60
       },
       "id": 71,
       "maxPerRow": 8,
@@ -1687,11 +1687,15 @@
       "type": "stat"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "veeam",
+    "backup & replication",
+    "vbr"
+  ],
   "templating": {
     "list": [
       {
@@ -1837,13 +1841,13 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Grafana Dashboard for Veeam Backup & Replication",
   "uid": "8W6ydiwVk",
-  "version": 15,
+  "version": 16,
   "weekStart": ""
 }
