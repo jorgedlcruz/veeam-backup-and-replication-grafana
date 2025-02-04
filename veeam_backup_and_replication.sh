@@ -9,8 +9,8 @@
 ##      .Notes
 ##      NAME:  veeam_backup_and_replication.sh
 ##      ORIGINAL NAME: veeam_backup_and_replication.sh
-##      LASTEDIT: 31/01/2025
-##      VERSION: 12.3.1
+##      LASTEDIT: 04/02/2025
+##      VERSION: 12.3.2
 ##      KEYWORDS: Veeam, , Backup, InfluxDB, Grafana
    
 ##      .Link
@@ -228,10 +228,10 @@ else
             -H "x-api-version: $veeamAPIVersion" \
             2>&1 -k --silent)
 
-            veeamVBRRepoCapacity=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").capacityGB" | awk '{printf "%d\n", $1 * 1024 * 1024 * 1024}') 
-            veeamVBRRepoFree=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").freeGB" | awk '{printf "%d\n", $1 * 1024 * 1024 * 1024}')
-            veeamVBRRepoUsed=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").usedSpaceGB" | awk '{printf "%d\n", $1 * 1024 * 1024 * 1024}')
-        
+            veeamVBRRepoCapacity=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").capacityGB" | awk '{printf "%.0f\n", $1 * 1024 * 1024 * 1024}') 
+            veeamVBRRepoFree=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").freeGB" | awk '{printf "%.0f\n", $1 * 1024 * 1024 * 1024}')
+            veeamVBRRepoUsed=$(echo "$veeamVBRRepoStateUrl" | jq --raw-output ".data[] | select(.id==\"$id\").usedSpaceGB" | awk '{printf "%.0f\n", $1 * 1024 * 1024 * 1024}')
+
             # Let's add some checks and put things to 0 or None if empty or issues        
             [[ ! -z "$veeamVBRRepoDescription" ]] || veeamVBRRepoDescription="None"
             [[ -z "$veeamVBRRepoCapacity" ]] && veeamVBRRepoCapacity=0
