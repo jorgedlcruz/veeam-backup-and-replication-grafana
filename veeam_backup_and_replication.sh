@@ -1,6 +1,6 @@
 #!/bin/bash
 ##      .SYNOPSIS
-##      Grafana Dashboard for Veeam Backup & Replication v12.3 - Using API to InfluxDB Script
+##      Grafana Dashboard for Veeam Backup & Replication v13.0.1 - Using API to InfluxDB Script
 ## 
 ##      .DESCRIPTION
 ##      This Script will query the Veeam Backup & Replication API and send the data directly to InfluxDB, which can be used to present it to Grafana. 
@@ -9,8 +9,8 @@
 ##      .Notes
 ##      NAME:  veeam_backup_and_replication.sh
 ##      ORIGINAL NAME: veeam_backup_and_replication.sh
-##      LASTEDIT: 04/02/2025
-##      VERSION: 12.3.2
+##      LASTEDIT: 31/01/2026
+##      VERSION: 13.0.1
 ##      KEYWORDS: Veeam, , Backup, InfluxDB, Grafana
    
 ##      .Link
@@ -34,7 +34,7 @@ veeamPassword="YOURVBRPASSWORD"
 veeamBackupServer="YOURVBRAPIPORT"
 veeamBackupPort="9419" #Default Port
 # API Version
-veeamAPIVersion="1.2-rev0" # Set the API version here (e.g., 1.2-rev0)
+veeamAPIVersion="1.3-rev1" # Set the API version here (e.g., 1.3-rev1)
 
 # Get the bearer token and HTTP status code
 response=$(curl -s -o response.json -w "%{http_code}" -X POST "https://$veeamBackupServer:$veeamBackupPort/api/oauth2/token" \
@@ -417,6 +417,117 @@ else
         "veeam_vbr_backupobjects,veeamVBR=$veeamBackupServer,veeamVBRBobjectName=$veeamVBRBobjectName,veeamVBRBobjecttype=$veeamVBRBobjecttype,veeamVBRBobjectPlatform=$veeamVBRBobjectPlatform,veeamVBRBobjectviType=$veeamVBRBobjectviType,veeamVBRBobjectObjectId=$veeamVBRBobjectObjectId,veeamVBRBobjectPath=$veeamVBRBobjectPath restorePointsCount=$veeamVBRBobjectrp"
 
     arraybobjects+=1
+        
+    done
+fi
+
+##
+# Veeam Backup & Replication Users. This part will check VBR Users
+##
+veeamVBRURL="https://$veeamBackupServer:$veeamBackupPort/api/v1/security/users"
+veeamVBRUsersUrl=$(curl -X GET $veeamVBRURL \
+  -H "Authorization: Bearer $veeamBearer" \
+  -H  "accept: application/json" \
+  -H  "x-api-version: $veeamAPIVersion" \
+  2>&1 -k --silent)
+
+declare -i arrayusers=0
+if [[ "$veeamVBRUsersUrl" == "[]" ]]; then
+    echo "There are not Users"
+else
+    for id in $(echo "$veeamVBRUsersUrl" | jq -r '.data[].id'); do
+        veeamVBRUserName=$(echo "$veeamVBRUsersUrl" | jq --raw-output ".data[$arrayusers].name" | awk '{gsub(/([ ,])/,"\\\\&");print}') 
+        veeamVBRUserType=$(echo "$veeamVBRUsersUrl" | jq --raw-output ".data[$arrayusers].type")
+        veeamVBRUserDescription=$(echo "$veeamVBRUsersUrl" | jq --raw-output ".data[$arrayusers].description" | awk '{gsub(/([ ,])/,"\\\\&");print}')
+        [[ ! -z "$veeamVBRUserDescription" ]] || veeamVBRUserDescription="None"
+        
+        #echo "veeam_vbr_users,veeamVBRUserName=$veeamVBRUserName,veeamVBRUserType=$veeamVBRUserType,veeamVBRUserDescription=$veeamVBRUserDescription"
+
+        ##Comment the influx write while debugging
+        echo "Writing veeam_vbr_users to InfluxDB"
+        influx write \
+        -t "$veeamInfluxDBToken" \
+        -b "$veeamInfluxDBBucket" \
+        -o "$veeamInfluxDBOrg" \
+        -p s \
+        "veeam_vbr_users,veeamVBR=$veeamBackupServer,veeamVBRUserName=$veeamVBRUserName,veeamVBRUserType=$veeamVBRUserType,veeamVBRUserDescription=$veeamVBRUserDescription users=1"
+
+        arrayusers+=1
+        
+    done
+fi
+
+##
+# Veeam Backup & Replication Roles. This part will check VBR Roles
+##
+veeamVBRURL="https://$veeamBackupServer:$veeamBackupPort/api/v1/security/roles"
+veeamVBRRolesUrl=$(curl -X GET $veeamVBRURL \
+  -H "Authorization: Bearer $veeamBearer" \
+  -H  "accept: application/json" \
+  -H  "x-api-version: $veeamAPIVersion" \
+  2>&1 -k --silent)
+
+declare -i arrayroles=0
+if [[ "$veeamVBRRolesUrl" == "[]" ]]; then
+    echo "There are not Roles"
+else
+    for id in $(echo "$veeamVBRRolesUrl" | jq -r '.data[].id'); do
+        veeamVBRRoleName=$(echo "$veeamVBRRolesUrl" | jq --raw-output ".data[$arrayroles].name" | awk '{gsub(/([ ,])/,"\\\\&");print}') 
+        veeamVBRRoleDescription=$(echo "$veeamVBRRolesUrl" | jq --raw-output ".data[$arrayroles].description" | awk '{gsub(/([ ,])/,"\\\\&");print}')
+        [[ ! -z "$veeamVBRRoleDescription" ]] || veeamVBRRoleDescription="None"
+
+        #echo "veeam_vbr_roles,veeamVBRRoleName=$veeamVBRRoleName,veeamVBRRoleDescription=$veeamVBRRoleDescription"
+
+        ##Comment the influx write while debugging
+        echo "Writing veeam_vbr_roles to InfluxDB"
+        influx write \
+        -t "$veeamInfluxDBToken" \
+        -b "$veeamInfluxDBBucket" \
+        -o "$veeamInfluxDBOrg" \
+        -p s \
+        "veeam_vbr_roles,veeamVBR=$veeamBackupServer,veeamVBRRoleName=$veeamVBRRoleName,veeamVBRRoleDescription=$veeamVBRRoleDescription roles=1"
+
+        arrayroles+=1
+        
+    done
+fi
+
+##
+# Veeam Backup & Replication Restore Points. This part will check VBR Restore Points
+##
+# Limiting to 1000 to prevent huge loops
+veeamVBRURL="https://$veeamBackupServer:$veeamBackupPort/api/v1/restorePoints?limit=1000"
+veeamVBRRestorePointsUrl=$(curl -X GET $veeamVBRURL \
+  -H "Authorization: Bearer $veeamBearer" \
+  -H  "accept: application/json" \
+  -H  "x-api-version: $veeamAPIVersion" \
+  2>&1 -k --silent)
+
+declare -i arrayrestorepoints=0
+if [[ "$veeamVBRRestorePointsUrl" == "[]" ]]; then
+    echo "There are not Restore Points"
+else
+    for id in $(echo "$veeamVBRRestorePointsUrl" | jq -r '.data[].id'); do
+        veeamVBRRestorePointName=$(echo "$veeamVBRRestorePointsUrl" | jq --raw-output ".data[$arrayrestorepoints].name" | awk '{gsub(/([ ,])/,"\\\\&");print}') 
+        veeamVBRRestorePointCreationTime=$(echo "$veeamVBRRestorePointsUrl" | jq --raw-output ".data[$arrayrestorepoints].creationTime")
+        creationTimeUnix=$(date -d "$veeamVBRRestorePointCreationTime" +"%s")
+        veeamVBRRestorePointType=$(echo "$veeamVBRRestorePointsUrl" | jq --raw-output ".data[$arrayrestorepoints].type")
+        
+        # Determine platform/type if available, or just use what we have
+        # Some restore points might have 'platformName' or similar depending on schema polymorphism, but sticking to base fields.
+        
+        #echo "veeam_vbr_restore_points,veeamVBRRestorePointName=$veeamVBRRestorePointName,veeamVBRRestorePointType=$veeamVBRRestorePointType creationTime=$creationTimeUnix"
+
+        ##Comment the influx write while debugging
+        echo "Writing veeam_vbr_restore_points to InfluxDB"
+        influx write \
+        -t "$veeamInfluxDBToken" \
+        -b "$veeamInfluxDBBucket" \
+        -o "$veeamInfluxDBOrg" \
+        -p s \
+        "veeam_vbr_restore_points,veeamVBR=$veeamBackupServer,veeamVBRRestorePointName=$veeamVBRRestorePointName,veeamVBRRestorePointType=$veeamVBRRestorePointType creationTime=$creationTimeUnix"
+
+        arrayrestorepoints+=1
         
     done
 fi
