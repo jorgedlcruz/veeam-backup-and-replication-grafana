@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "12.3.2"
     },
     {
       "type": "datasource",
@@ -119,13 +119,14 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -143,7 +144,7 @@
             "steps": [
               {
                 "color": "rgba(50, 172, 45, 0.97)",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -220,18 +221,23 @@
       "maxDataPoints": 50000,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "$tag_veeamBackupSessionsName",
@@ -341,6 +347,11 @@
               "type": "color-background"
             },
             "filterable": true,
+            "footer": {
+              "reducers": [
+                "sum"
+              ]
+            },
             "inspect": false
           },
           "decimals": 0,
@@ -351,7 +362,7 @@
             "steps": [
               {
                 "color": "rgba(50, 172, 45, 0.97)",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -467,15 +478,7 @@
       "maxDataPoints": 50000,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -484,7 +487,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "$tag_veeamBackupSessionsName",
@@ -631,7 +634,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "points",
-            "fillOpacity": 0,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -639,13 +642,14 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 7,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -663,7 +667,7 @@
             "steps": [
               {
                 "color": "rgba(50, 172, 45, 0.97)",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -729,18 +733,23 @@
       "maxDataPoints": 50000,
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "mean"
+          ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "$tag_veeamBackupSessionsName",
@@ -855,7 +864,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "rgb(133, 133, 133)"
+                    "color": "rgb(133, 133, 133)",
+                    "value": 0
                   },
                   {
                     "color": "dark-green",
@@ -879,7 +889,7 @@
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 19
           },
           "id": 6,
           "maxDataPoints": 100,
@@ -894,6 +904,7 @@
             "graphMode": "none",
             "justifyMode": "auto",
             "orientation": "horizontal",
+            "percentChangeColorMode": "standard",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -901,10 +912,12 @@
               "fields": "",
               "values": false
             },
+            "showPercentChange": false,
             "text": {},
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "9.5.2",
+          "pluginVersion": "12.3.2",
           "repeat": "vbrjobs",
           "repeatDirection": "h",
           "targets": [
@@ -1013,6 +1026,11 @@
               "mode": "gradient",
               "type": "color-background"
             },
+            "footer": {
+              "reducers": [
+                "sum"
+              ]
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1021,7 +1039,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1066,19 +1084,11 @@
       "id": 46,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "datasource": {
@@ -1148,6 +1158,11 @@
               "mode": "gradient",
               "type": "color-background"
             },
+            "footer": {
+              "reducers": [
+                "sum"
+              ]
+            },
             "inspect": false
           },
           "mappings": [
@@ -1166,7 +1181,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1235,19 +1250,11 @@
       "id": 55,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "datasource": {
@@ -1327,7 +1334,7 @@
             "steps": [
               {
                 "color": "dark-green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "dark-yellow",
@@ -1405,7 +1412,7 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "$tag_veeamRepositoryName",
@@ -1480,6 +1487,11 @@
               "mode": "gradient",
               "type": "color-background"
             },
+            "footer": {
+              "reducers": [
+                "sum"
+              ]
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1489,7 +1501,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1618,19 +1630,11 @@
       "id": 64,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "datasource": {
@@ -1744,7 +1748,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "light-blue",
             "mode": "thresholds"
           },
           "decimals": 0,
@@ -1754,24 +1757,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": 0
               },
               {
-                "color": "semi-dark-green",
-                "value": 7
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 80
               },
               {
-                "color": "dark-green",
-                "value": 14
-              },
-              {
-                "color": "#205519",
-                "value": 30
-              },
-              {
-                "color": "#113c0c",
-                "value": 60
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": 90
               }
             ]
           }
@@ -1803,7 +1798,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "12.3.2",
       "repeat": "vbrprotected",
       "repeatDirection": "h",
       "targets": [
@@ -1890,8 +1885,9 @@
       "type": "stat"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 42,
   "tags": [
     "veeam",
     "backup & replication",
@@ -4260,7 +4256,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Grafana Dashboard for Veeam Backup & Replication",
-  "uid": "8W6ydiwVk",
-  "version": 21,
+  "uid": "8W6ydiwVk32",
+  "version": 3,
   "weekStart": ""
 }
